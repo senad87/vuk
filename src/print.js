@@ -500,4 +500,5 @@ module.exports = function(parser) {
 	ast.LiteralNode.prototype.print = function(indent, indentChar) {
 		return this.value;
 	};
+
 };

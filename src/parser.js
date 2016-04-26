@@ -13,6 +13,8 @@ module.exports = function(options) {
 
       program = jsparser.parse(source);
 
+      // console.log(program);
+      
       var validJS = program.print("", " ");
 
       return validJS;

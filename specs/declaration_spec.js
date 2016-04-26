@@ -24,6 +24,7 @@ describe('parser', function() {
 
     describe('functions ending with empty arguments list', function() {
         it('for standard function declaration should return that function', function() {
+
             var givenSource = "function isEmpty() {}";
             var expectedFun = cleanFunStr(function isEmpty() {});
 
@@ -77,6 +78,7 @@ describe('parser', function() {
             var parsingResult = clean(parser.parse(givenSource));
 
             expect(parsingResult).toBe(expectedFun);
+            
         });
 
         it('starting with identifier, followed by args list, followed by identifier', function() {
@@ -88,6 +90,7 @@ describe('parser', function() {
             var parsingResult = clean(parser.parse(givenSource));
 
             expect(parsingResult).toBe(expectedFun);
+
         });
 
     });

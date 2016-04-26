@@ -303,6 +303,7 @@ ExpressionStatement
         {
             $$ = new ExpressionStatementNode($1, createSourceLocation(null, @1, @2));
         }
+    | VukCallExpression
     | ExpressionNoBF error
         {
             $$ = new ExpressionStatementNode($1, createSourceLocation(null, @1, @1));
@@ -592,6 +593,30 @@ IdentifierParametersList
         }
     ;
 
+
+IdentifierArgumentsList
+    : "IDENTIFIER"
+        {
+          id = new IdentifierNode($1, createSourceLocation(null, @1, @1));
+          $$ = { id: id, arguments: []};
+        }
+    | Arguments "IDENTIFIER"
+        {
+          id = new IdentifierNode($2, createSourceLocation(null, @2, @2))
+          $$ = { id: id, arguments: $1};
+        }
+    | IdentifierArgumentsList Arguments "IDENTIFIER"
+        {
+          arguments = $1.arguments.concat($2);
+
+          idFromList = new IdentifierNode($1.id.name, createSourceLocation(null, @1, @1));
+          idToConcat = new IdentifierNode($3, createSourceLocation(null, @3, @3));
+          id = new MultipleIdentifierNodes(idFromList, idToConcat);
+
+          $$ = { id: id, arguments: arguments };
+        }
+    ;
+
 FunctionExpression
     : "FUNCTION" "IDENTIFIER" "(" ")" "{" FunctionBody "}"
         {
@@ -857,11 +882,21 @@ CallExpression
         }
     ;
 
+VukCallExpression
+    : IdentifierArgumentsList Arguments
+        {
+            arguments = $1.arguments.concat($2);
+            $$ = new CallExpressionNode($1.id, arguments, createSourceLocation(null, @1, @2));
+        }
+    ;
+
 CallExpressionNoBF
     : MemberExpressionNoBF Arguments
         {
             $$ = new CallExpressionNode($1, $2, createSourceLocation(null, @1, @2));
         }
+
+    | VukCallExpression
     | CallExpressionNoBF Arguments
         {
             $$ = new CallExpressionNode($1, $2, createSourceLocation(null, @1, @2));
