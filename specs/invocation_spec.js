@@ -76,7 +76,7 @@ describe('Invocation', function() {
 
 
 
-    it("will it really work", function() {
+    xit("will it really work", function() {
 
         var givenSource = "function is(element)In(array){ return array.indexOf(element) != -1; }   is(1)In([1,2,3])";
 

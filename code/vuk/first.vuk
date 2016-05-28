@@ -1,0 +1,5 @@
+function is(element)In(array) {
+  var s = array.indexOf(element) != -1;
+}
+
+is(1)In([1,2,3]);

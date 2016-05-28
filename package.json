@@ -3,5 +3,12 @@
   "version": "0.0.1",
   "author": "Senad Mehic",
   "description": "Javascript with arguments in function names",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-cli": "^1.2.0",
+    "grunt-contrib-connect": "^1.0.2",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-jasmine-node": "^0.3.1"
+  }
 }

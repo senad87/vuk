@@ -1,0 +1,15 @@
+
+function increment(a) {
+    return a + 1;
+}
+
+function (funToBeCalledFor)allIn(array) {
+
+    return array.map(funToBeCalledFor);
+
+}
+
+var numbers = [1,2,3];
+
+(increment)allIn(numbers);
+

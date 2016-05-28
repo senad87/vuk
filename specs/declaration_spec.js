@@ -21,37 +21,40 @@ describe('parser', function() {
         });
     });
 
-
     describe('functions ending with empty arguments list', function() {
-        it('for standard function declaration should return that function', function() {
 
-            var givenSource = "function isEmpty() {}";
-            var expectedFun = cleanFunStr(function isEmpty() {});
+        it('standard function declaration should parse to itself', function() {
 
-            var parsingResult = clean(parser.parse(givenSource));
+            var given = "function isEmpty() {}";
 
-            expect(parsingResult).toBe(expectedFun);
+            var expectedResult = cleanFunStr(function isEmpty() {});
+
+            var parsingResult = clean(parser.parse(given));
+
+            expect(parsingResult).toBe(expectedResult);
         });
 
         it('starting with arguments first, followed by identifier', function() {
 
-            var givenSource = "function (array)isEmpty() {}";
-            var expectedFun = cleanFunStr(function isEmpty(array) {});
+            var given = "function (array)isEmpty() {}";
 
-            var parsingResult = clean(parser.parse(givenSource));
+            var expectedResult = cleanFunStr(function isEmpty(array) {});
 
-            expect(parsingResult).toBe(expectedFun);
+            var parsingResult = clean(parser.parse(given));
+
+            expect(parsingResult).toBe(expectedResult);
 
         });
 
         it('starting with identifier followed by args, followed by identifier', function() {
 
-            var givenSource = "function from(array1)removeNumbers() {}";
-            var expectedFun = cleanFunStr(function fromremoveNumbers(array1) {});
+            var given = "function from(array1)removeNumbers() {}";
 
-            var parsingResult = clean(parser.parse(givenSource));
+            var expectedResult = cleanFunStr(function fromremoveNumbers(array1) {});
 
-            expect(parsingResult).toBe(expectedFun);
+            var parsingResult = clean(parser.parse(given));
+
+            expect(parsingResult).toBe(expectedResult);
 
         });
 
@@ -61,49 +64,53 @@ describe('parser', function() {
 
         it('starting with args list, followed by identifier', function() {
 
-            var givenSource = "function (array1)andNotIn(array2) {}";
-            var expectedFun = cleanFunStr(function andNotIn(array1, array2) {});
+            var given = "function (array1)andNotIn(array2) {}";
 
-            var parsingResult = clean(parser.parse(givenSource));
+            var expectedResult = cleanFunStr(function andNotIn(array1, array2) {});
 
-            expect(parsingResult).toBe(expectedFun);
+            var parsingResult = clean(parser.parse(given));
+
+            expect(parsingResult).toBe(expectedResult);
 
         });
 
         it('starting with args list, followed by identifier, followed by args list, followed by identifier', function() {
 
-            var givenSource = "function (element)isIn(array1)andNotIn(array2) {}";
-            var expectedFun = cleanFunStr(function isInandNotIn(element, array1, array2) {});
+            var given = "function (element)isIn(array1)andNotIn(array2) {}";
 
-            var parsingResult = clean(parser.parse(givenSource));
+            var expectedResult = cleanFunStr(function isInandNotIn(element, array1, array2) {});
 
-            expect(parsingResult).toBe(expectedFun);
+            var parsingResult = clean(parser.parse(given));
+
+            expect(parsingResult).toBe(expectedResult);
             
         });
 
         it('starting with identifier, followed by args list, followed by identifier', function() {
 
+            var given = "function elementsOf(array1)areFoundIn(array2) {}";
 
-            var givenSource = "function elementsOf(array1)areFoundIn(array2) {}";
-            var expectedFun = clean((function elementsOfareFoundIn(array1, array2) {}).toString());
+            var expectedResult = clean((function elementsOfareFoundIn(array1, array2) {}).toString());
 
-            var parsingResult = clean(parser.parse(givenSource));
+            var parsingResult = clean(parser.parse(given));
 
-            expect(parsingResult).toBe(expectedFun);
-
+            expect(parsingResult).toBe(expectedResult);
+            
         });
 
     });
 
     describe('functions with multiple arguments in args list', function() {
-        it('should be parse correctly no matter how many args are in the any of the args list', function() {
 
-            var givenSource = "function identifier1(arg1, arg2, arg3)Identifier2(arg1, arg2) {}";
-            var expectedFun = clean((function identifier1Identifier2(arg1, arg2, arg3, arg1, arg2) {}).toString());
+        it('should be parsed correctly no matter how many args are in the any of the args list', function() {
 
-            var parsingResult = clean(parser.parse(givenSource));
+            var given = "function identifier1(arg1, arg2, arg3)Identifier2(arg1, arg2) {}";
 
-            expect(parsingResult).toBe(expectedFun);
+            var expectedResult = clean((function identifier1Identifier2(arg1, arg2, arg3, arg1, arg2) {}).toString());
+
+            var parsingResult = clean(parser.parse(given));
+
+            expect(parsingResult).toBe(expectedResult);
         });
     });
 
