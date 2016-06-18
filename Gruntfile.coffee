@@ -66,7 +66,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks('grunt-jasmine-node');
 
 
-  grunt.registerTask('runTests', 'jasmine_node')
+  grunt.registerTask('runTests', ['jasmine_node', 'watch:tests'])
 
   grunt.registerTask('compile', 'Parses .vuk files to .js files', parseFiles)
 

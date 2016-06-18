@@ -18,7 +18,7 @@ describe('Invocation', function() {
     });
 
 
-    it('should work standard JS', function() {
+    it('should work with standard JS', function() {
 
         var givenSource = "trci(senad);";
         var expected = "trci(senad);";
@@ -27,7 +27,7 @@ describe('Invocation', function() {
 
     });
 
-    it('should work standard JS', function() {
+    it('should work with empty parameters list', function() {
 
         var givenSource = "trci();";
         var expected = "trci();";
@@ -38,7 +38,7 @@ describe('Invocation', function() {
 
 
 
-    it('should work', function() {
+    it('should work with multiple split parameters lists', function() {
 
         var givenSource = "trci(senad)brzo(upm);";
         var expected = "trcibrzo(senad,upm);";
@@ -47,7 +47,7 @@ describe('Invocation', function() {
 
     });
 
-    it('should work', function() {
+    it('should work when ending with the empty param list', function() {
 
         var givenSource = "trci(senad)brzo();";
         var expected = "trcibrzo(senad);";
@@ -56,7 +56,7 @@ describe('Invocation', function() {
 
     });
 
-    it('should work', function() {
+    it('should work starting with params list', function() {
 
         var givenSource = "(arg1)id1(arg2)id2(arg3);";
         var expected = "id1id2(arg1,arg2,arg3);";
@@ -65,7 +65,7 @@ describe('Invocation', function() {
 
     });
 
-    it('should work, multiple args', function() {
+    it('should work, multiple params in many params lists', function() {
 
         var givenSource = "(arg1)id1(arg2,arg3)id2(arg4,arg5,arg6);";
         var expected = "id1id2(arg1,arg2,arg3,arg4,arg5,arg6);";
@@ -74,12 +74,9 @@ describe('Invocation', function() {
 
     });
 
-
-
-    xit("will it really work", function() {
+    it("declaration & invocation test", function() {
 
         var givenSource = "function is(element)In(array){ return array.indexOf(element) != -1; }   is(1)In([1,2,3])";
-
         console.log(parser.parse(givenSource));
     });
 });
