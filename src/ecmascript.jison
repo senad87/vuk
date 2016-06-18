@@ -594,7 +594,7 @@ IdentifierParametersList
     ;
 
 
-IdentifierArgumentsList
+VukIdentifierArgumentsList
     : "IDENTIFIER"
         {
           id = new IdentifierNode($1, createSourceLocation(null, @1, @1));
@@ -605,7 +605,7 @@ IdentifierArgumentsList
           id = new IdentifierNode($2, createSourceLocation(null, @2, @2))
           $$ = { id: id, arguments: $1};
         }
-    | IdentifierArgumentsList Arguments "IDENTIFIER"
+    | VukIdentifierArgumentsList Arguments "IDENTIFIER"
         {
           arguments = $1.arguments.concat($2);
 
@@ -883,7 +883,7 @@ CallExpression
     ;
 
 VukCallExpression
-    : IdentifierArgumentsList Arguments
+    : VukIdentifierArgumentsList Arguments
         {
             arguments = $1.arguments.concat($2);
             $$ = new CallExpressionNode($1.id, arguments, createSourceLocation(null, @1, @2));
