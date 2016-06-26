@@ -33,6 +33,23 @@ module.exports = function(options) {
 
 
 
+//
+// | CallExpressionNoBF Arguments
+// {
+//   $$ = new CallExpressionNode($1, $2, createSourceLocation(null, @1, @2));
+// }
+// | CallExpressionNoBF "[" Expression "]"
+// {
+//   $$ = new MemberExpressionNode($1, $3, true, createSourceLocation(null, @1, @4));
+// }
+// | CallExpressionNoBF "." IdentifierName
+// {
+//   $$ = new MemberExpressionNode($1, $3, false, createSourceLocation(null, @1, @3));
+// }
+// | VukCallExpression
+
+
+
 
 
 

@@ -303,7 +303,6 @@ ExpressionStatement
         {
             $$ = new ExpressionStatementNode($1, createSourceLocation(null, @1, @2));
         }
-    | VukCallExpression
     | ExpressionNoBF error
         {
             $$ = new ExpressionStatementNode($1, createSourceLocation(null, @1, @1));
@@ -558,11 +557,11 @@ DebuggerStatement
     ;
 
 FunctionDeclaration
-    : "FUNCTION" IdentifierParametersList "(" ")" "{" FunctionBody "}"
+    : "FUNCTION" VukIdentifierParametersList "(" ")" "{" FunctionBody "}"
         {
           $$ = new FunctionDeclarationNode($2.id, $2.params, $6, false, false, createSourceLocation(null, @1, @7));
         }
-    | "FUNCTION" IdentifierParametersList "(" FormalParameterList ")" "{" FunctionBody "}"
+    | "FUNCTION" VukIdentifierParametersList "(" FormalParameterList ")" "{" FunctionBody "}"
         {
           params = $2.params.concat($4);
           $$ = new FunctionDeclarationNode($2.id, params, $7, false, false, createSourceLocation(null, @1, @8));
@@ -570,7 +569,7 @@ FunctionDeclaration
     ;
 
 
-IdentifierParametersList
+VukIdentifierParametersList
     : "IDENTIFIER"
         {
           id = new IdentifierNode($1, createSourceLocation(null, @1, @1));
@@ -581,7 +580,7 @@ IdentifierParametersList
           id = new IdentifierNode($4, createSourceLocation(null, @4, @4))
           $$ = { id: id, params: $2};
         }
-    | IdentifierParametersList "(" FormalParameterList ")" "IDENTIFIER"
+    | VukIdentifierParametersList "(" FormalParameterList ")" "IDENTIFIER"
         {
           params = $1.params.concat($3);
 
@@ -594,7 +593,7 @@ IdentifierParametersList
     ;
 
 
-VukIdentifierArgumentsList
+VukIdentifierArgumentsListOLD
     : "IDENTIFIER"
         {
           id = new IdentifierNode($1, createSourceLocation(null, @1, @1));
@@ -682,6 +681,23 @@ PrimaryExpression
     | ObjectLiteral
     ;
 
+OLDPrimaryExpressionNoBrace
+    : "THIS"
+        {
+            $$ = new ThisExpressionNode(createSourceLocation(null, @1, @1));
+        }
+    | "IDENTIFIER"
+        {
+            $$ = new IdentifierNode($1, createSourceLocation(null, @1, @1));
+        }
+    | Literal
+    | ArrayLiteral
+    | "(" Expression ")"
+        {
+            $$ = $2;
+        }
+    ;
+
 PrimaryExpressionNoBrace
     : "THIS"
         {
@@ -696,6 +712,46 @@ PrimaryExpressionNoBrace
     | "(" Expression ")"
         {
             $$ = $2;
+        }
+    | VukPrimaryExpression
+    ;
+
+VukPrimaryExpression
+    : VukIdentifierArgumentsList Arguments
+        {
+            arguments = $1.arguments.concat($2);
+            $$ = new CallExpressionNode($1.id, arguments, createSourceLocation(null, @1, @2));
+        }
+    ;
+
+VukIdentifierArgumentsList
+    : Arguments "IDENTIFIER"
+        {
+          id = new IdentifierNode($2, createSourceLocation(null, @2, @2))
+          $$ = { id: id, arguments: $1};
+        }
+    | "(" Expression ")" "IDENTIFIER"
+        {
+            if ($2.type == "Identifier") {
+              arguments = [$2];
+            }
+
+            if ($2.type == "SequenceExpression") {
+              arguments = $2.expressions;
+            }
+
+            id = new IdentifierNode($4, createSourceLocation(null, @4, @4))
+            $$ = { id: id, arguments: arguments};
+        }
+    | VukIdentifierArgumentsList Arguments "IDENTIFIER"
+        {
+          arguments = $1.arguments.concat($2);
+
+          idFromList = new IdentifierNode($1.id.name, createSourceLocation(null, @1, @1));
+          idToConcat = new IdentifierNode($3, createSourceLocation(null, @3, @3));
+          id = new MultipleIdentifierNodes(idFromList, idToConcat);
+
+          $$ = { id: id, arguments: arguments };
         }
     ;
 
@@ -882,7 +938,7 @@ CallExpression
         }
     ;
 
-VukCallExpression
+VukCallExpressionOLD
     : VukIdentifierArgumentsList Arguments
         {
             arguments = $1.arguments.concat($2);
@@ -890,15 +946,36 @@ VukCallExpression
         }
     ;
 
+
 CallExpressionNoBF
     : MemberExpressionNoBF Arguments
         {
             $$ = new CallExpressionNode($1, $2, createSourceLocation(null, @1, @2));
         }
 
-    | VukCallExpression
+    | MemberExpressionNoBF "(" Expression ")"
+        {
+            if ($3.type == "Identifier") {
+              arguments = [$3];
+            }
+
+            if ($3.type == "SequenceExpression") {
+              arguments = $3.expressions;
+            }
+
+            $$ = new CallExpressionNode($1, arguments, createSourceLocation(null, @1, @4));
+        }
+    | MemberExpressionNoBF VukIdentifierArgumentsList Arguments
+        {
+            arguments = $2.arguments.concat($3);
+
+            id = new MultipleIdentifierNodes($1, $2.id);
+
+            $$ = new CallExpressionNode(id, arguments, createSourceLocation(null, @1, @3));
+        }
     | CallExpressionNoBF Arguments
         {
+
             $$ = new CallExpressionNode($1, $2, createSourceLocation(null, @1, @2));
         }
     | CallExpressionNoBF "[" Expression "]"
@@ -910,6 +987,7 @@ CallExpressionNoBF
             $$ = new MemberExpressionNode($1, $3, false, createSourceLocation(null, @1, @3));
         }
     ;
+
 
 IdentifierName
     : "IDENTIFIER"

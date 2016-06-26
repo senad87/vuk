@@ -1,3 +1,5 @@
+// THIS test IS not RUNNING, there is a X in front of describe
+
 var ecmascript = require("../src/ecmascript");
 var printer = require("../src/print");
 var Parser = require("../src/parser");
@@ -26,7 +28,7 @@ describe('Invocation', function() {
         expect(clean(parser.parse(givenSource))).toBe(expected);
 
     });
-
+    
     it('should work with empty parameters list', function() {
 
         var givenSource = "trci();";
@@ -35,8 +37,6 @@ describe('Invocation', function() {
         expect(clean(parser.parse(givenSource))).toBe(expected);
 
     });
-
-
 
     it('should work with multiple split parameters lists', function() {
 
@@ -47,10 +47,29 @@ describe('Invocation', function() {
 
     });
 
+
     it('should work when ending with the empty param list', function() {
 
         var givenSource = "trci(senad)brzo();";
         var expected = "trcibrzo(senad);";
+
+        expect(clean(parser.parse(givenSource))).toBe(expected);
+
+    });
+
+    it('should work starting with one param', function() {
+
+        var givenSource = "(arg1)id1(arg2);";
+        var expected = "id1(arg1,arg2);";
+
+        expect(clean(parser.parse(givenSource))).toBe(expected);
+
+    });
+
+    it('should work starting with two params', function() {
+
+        var givenSource = "(arg1,arg2)id1(arg3);";
+        var expected = "id1(arg1,arg2,arg3);";
 
         expect(clean(parser.parse(givenSource))).toBe(expected);
 
