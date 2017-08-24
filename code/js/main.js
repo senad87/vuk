@@ -8,5 +8,4 @@ function allIn(funToBeCalledFor, array)
 }
 var numbers = [1, 2, 3]
 ;
-allIn(increment, numbers)
-;
+allIn(increment, numbers);

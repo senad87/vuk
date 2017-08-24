@@ -1,5 +1,30 @@
-function is(element)In(array) {
-  var s = array.indexOf(element) != -1;
+function call(func, n)times() {
+  for(var i = 0; i < n; i++) {
+    func();
+  }
 }
 
-is(1)In([1,2,3]);
+function log() {
+
+  var s = 'senad konj';
+  alert(s);
+}
+
+
+call(log, 5)times();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

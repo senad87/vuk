@@ -11,5 +11,12 @@ function (funToBeCalledFor)allIn(array) {
 
 var numbers = [1,2,3];
 
-(increment)allIn(numbers);
+
+
+
+
+
+
+
+(increment)allIn(numbers)
 

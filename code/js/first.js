@@ -1,7 +1,15 @@
-function isIn(element, array)
+function calltimes(func, n)
 {
- var s = (array.indexOf(element)) != (-(1))
- ;
+ for (var i = 0; (i) < (n); (i++))
+ {
+  func();
+ }
+
 }
-isIn(1, [1, 2, 3])
-;
+function log()
+{
+ var s = 'senad konj'
+ ;
+ alert(s);
+}
+calltimes(log, 5);
