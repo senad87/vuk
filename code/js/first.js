@@ -8,7 +8,7 @@ function calltimes(func, n)
 }
 function log()
 {
- var s = 'senad konj'
+ var s = 'sksksks'
  ;
  alert(s);
 }
